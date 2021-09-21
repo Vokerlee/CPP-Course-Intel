@@ -1,4 +1,4 @@
-# 2Q Implementatin Cache
+# 2Q Implementation Cache
 
 This program is the model of 2Q Cache. 
 
