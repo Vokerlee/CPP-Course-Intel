@@ -10,20 +10,16 @@ namespace cch
     class Page
     {
         int    id_   = 0; // page id
-        size_t size_ = 0; // page size
-
         Data   data_ = 0; // data
+
+        static size_t size_; // page size
 
     public:
 
         Page(int id = 0, Data data = 0) :
             id_(id),
-            size_(sizeof(data)),
             data_(data)
-        {
-            if (data == 0)
-                size_ = 0;
-        }
+        {}
 
         int id() const
         {
@@ -49,20 +45,11 @@ namespace cch
         {
             std::cerr << "Page ID: " << id_ << " " << "Page size: " << size_ << " " << "Page data " << data_ << std::endl;
         }
-
-        bool ok() const
-        {
-            if (size_ < 0)
-            {
-                std::cerr << "Page with invalid size: " << std::endl;
-                print();
-
-                return false;
-            }
-            else
-                return true;
-        }
     };
+
+    template<typename Data>
+    size_t Page<Data>::size_ = sizeof(Data);
+
 }
 
 #endif // !PAGE_H_

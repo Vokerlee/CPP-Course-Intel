@@ -43,26 +43,38 @@ namespace cch
 
         void add_page(Data page)
         {
-            // Insert new element
-            list_.push_front(page);
-            hash_table_.insert({page.id(), &page}); // not to copy the page
+            if (cur_size_ < mem_size_)
+            {
+                // Insert new element
+                list_.push_front(page);
+                hash_table_.insert({page.id(), &page}); // not to copy the page
 
-            // Delete old element
-            Data* deleted = &list_.back();
-            hash_table_.erase(deleted->id());
-            list_.pop_back();
+                // Delete old element
+                Data* deleted = &list_.back();
+                hash_table_.erase(deleted->id());
+                list_.pop_back();
 
-            cur_size_++;
+                cur_size_++;
+            }
         }
 
         void remove_page(Data page)
         {
-            // Buffer should be constant length
-            hash_table_.erase(page.id());
-            list_.remove(page);
-            list_.push_back(Data());
+            if (cur_size_ > 0)
+            {
+                // Buffer should be constant length
+                hash_table_.erase(page.id());
+                list_.remove(page);
+                list_.push_back(Data());
 
-            cur_size_--;
+                cur_size_--;
+            }  
+        }
+
+        void update_page(Data page)
+        {
+            list_.remove(page);
+            list_.push_front(page);
         }
 
         bool page_at(int id) const

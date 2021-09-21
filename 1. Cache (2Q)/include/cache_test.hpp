@@ -10,7 +10,7 @@
 
 namespace cch
 {
-    const size_t MAX_TEST_NUM = 100;
+    const size_t MAX_TEST_NUM = 15;
 
     template<typename Data>
     class CacheTest
@@ -31,17 +31,19 @@ namespace cch
 
         void print_data() const
         {
-            std::cerr << "Printing test data: \n";
+            std::cerr << "Printing test data: "          << std::endl;
             std::cerr << "Number of pages: " << n_pages_ << std::endl;
-            std::cerr << "Printing generated pages: \n" << std::endl;
+            std::cerr << "Printing generated pages: \n"  << std::endl;
 
             for (size_t i = 0; i < n_pages_; ++i)
                 pages_[i].print();
+
+            std::cerr << std::endl;
         }
 
         void fill_cache(Cache_2Q<Data>& cache) const
         {
-            for (int i = 0; i < n_pages_; ++i)
+            for (int i = 0; i < cache.main.mem_size_; ++i)
                 cache.main.add_page(pages_[i]);
         }
 
@@ -53,10 +55,11 @@ namespace cch
             {
                 std::cerr << "Accessing page with id: " << pages_[i].id() << std::endl;
                 hits += cache.handle_page(pages_[i]);
-                cache.print_cache();
+                cache.print();
             }
 
-            std::cerr << "Hits: " << hits << std::endl;
+            std::cerr << "Hits: " << hits << std::endl <<
+                         "Memory accesses << " << n_pages_ << std::endl;
         }
     };
 }
