@@ -27,8 +27,6 @@ namespace cch
     template<typename Data>
     class Cache_2Q : public noncopyable
     {
-        friend class CacheTest<Data>;
-
         CacheMem<Page<Data>> in;  
         CacheMem<Page<Data>> main;
         CacheMem<Page<Data>> out;

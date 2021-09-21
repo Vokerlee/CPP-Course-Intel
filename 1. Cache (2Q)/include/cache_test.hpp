@@ -41,12 +41,6 @@ namespace cch
             std::cerr << std::endl;
         }
 
-        void fill_cache(Cache_2Q<Data>& cache) const
-        {
-            for (int i = 0; i < cache.main.mem_size_; ++i)
-                cache.main.add_page(pages_[i]);
-        }
-
         void test_cache(Cache_2Q<Data>& cache) const
         {
             int hits = 0;
