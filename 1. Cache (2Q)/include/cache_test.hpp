@@ -10,13 +10,13 @@
 
 namespace cch
 {
-    const size_t MAX_TEST_NUM = 15;
-
     template<typename Data>
     class CacheTest
     {
         size_t n_pages_;
         std::vector<Page<Data>> pages_;
+
+        static size_t n_tests;
 
     public:
 
@@ -26,7 +26,7 @@ namespace cch
             srand(time(NULL));
 
             for (size_t i = 0; i < n_pages; ++i)
-                pages_.push_back(Page<Data>(rand() % MAX_TEST_NUM, rand() % MAX_TEST_NUM));
+                pages_.push_back(Page<Data>(rand() % n_tests, rand() % n_tests));
         }
 
         void print_data() const
@@ -41,21 +41,32 @@ namespace cch
             std::cerr << std::endl;
         }
 
-        void test_cache(Cache_2Q<Data>& cache) const
+        void test_cache(Cache_2Q<Data>& cache, bool silenсe = true) const
         {
             int hits = 0;
 
-            for (size_t i = 0; i < n_pages_; ++i)
+            if (silenсe)
             {
-                std::cerr << "Accessing page with id: " << pages_[i].id() << std::endl;
-                hits += cache.handle_page(pages_[i]);
-                cache.print();
+                for (size_t i = 0; i < n_pages_; ++i)
+                    hits += cache.handle_page(pages_[i]);
+            }
+            else
+            {
+                for (size_t i = 0; i < n_pages_; ++i)
+                {
+                    std::cerr << "Accessing page with id: " << pages_[i].id() << std::endl;
+                    hits += cache.handle_page(pages_[i]);
+                    cache.print();
+                }
             }
 
             std::cerr << "Hits: " << hits << std::endl <<
-                         "Memory accesses << " << n_pages_ << std::endl;
+                         "Memory accesses: " << n_pages_ << std::endl;
         }
     };
+
+    template<typename Data>
+    size_t CacheTest<Data>::n_tests = 5000;
 }
 
 #endif // !Cache_2QEST_H_

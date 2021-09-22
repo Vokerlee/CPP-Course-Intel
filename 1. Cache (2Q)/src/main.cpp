@@ -3,10 +3,10 @@
 
 int main()
 {
-    //cch::CacheTest<int> test(50);
+    //cch::CacheTest<int> test(1000000);
+    //cch::Cache_2Q<int> cache(2000);
 
     //test.print_data();
-    //test.fill_cache(cache); // for partially initialized cache
     //test.test_cache(cache);
 
     //cache.print();

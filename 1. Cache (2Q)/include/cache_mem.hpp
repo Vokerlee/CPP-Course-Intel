@@ -79,17 +79,11 @@ namespace cch
 
         bool page_at(int id) const
         {
-            try 
-            {
-                hash_table_.at(id);
-            }
-            
-            catch(std::out_of_range)
-            {
-                return false;
-            }
 
-            return true;
+            if (hash_table_.find(id) == hash_table_.end())
+                return false;
+            else
+                return true;
         }
 
         bool ok() const

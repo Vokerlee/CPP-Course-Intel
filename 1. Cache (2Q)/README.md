@@ -10,8 +10,8 @@ git clone https://github.com/Vokerlee/CPP-Course-Intel.git
 cd CPP-Course-Intel/1.\ Cache\ \(2Q\)/
 mkdir build
 cd build
-cmake ..
-./cache
+cmake -DCMAKE_BUILD_TYPE=Release ..
+time ./cache
 ```
 
 ## How to use

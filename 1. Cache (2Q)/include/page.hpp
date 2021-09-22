@@ -16,7 +16,7 @@ namespace cch
 
     public:
 
-        Page(int id = 0, Data data = 0) :
+        Page(int id = -1, Data data = 0) :
             id_(id),
             data_(data)
         {}
