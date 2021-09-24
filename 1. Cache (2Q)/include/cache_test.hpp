@@ -41,11 +41,11 @@ namespace cch
             std::cerr << std::endl;
         }
 
-        void test_cache(Cache_2Q<Data>& cache, bool silenсe = true) const
+        void test_cache(Cache_2Q<Data>& cache, bool silence = true) const
         {
             int hits = 0;
 
-            if (silenсe)
+            if (silence)
             {
                 for (size_t i = 0; i < n_pages_; ++i)
                     hits += cache.handle_page(pages_[i]);
