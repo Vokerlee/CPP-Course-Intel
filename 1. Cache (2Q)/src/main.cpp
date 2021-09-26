@@ -1,7 +1,7 @@
 #include "../include/2q_cache.hpp"
 #include "../include/cache_test.hpp"
 
-#define CACHE_TEST
+//#define CACHE_TEST
 
 int main()
 {
@@ -15,7 +15,7 @@ int main()
 
     //cache.print();
 
-#elif
+#else
 
     size_t cache_size = 0;
     size_t n_tests    = 0;
