@@ -1,15 +1,21 @@
 #include "../include/2q_cache.hpp"
 #include "../include/cache_test.hpp"
 
+#define CACHE_TEST
+
 int main()
 {
-    //cch::CacheTest<int> test(1000000);
-    //cch::Cache_2Q<int> cache(2000);
+
+#ifdef CACHE_TEST
+    cch::CacheTest<int> test(1000000);
+    cch::Cache_2Q<int>  cache(5000);
 
     //test.print_data();
-    //test.test_cache(cache);
+    test.test_cache(cache);
 
     //cache.print();
+
+#elif
 
     size_t cache_size = 0;
     size_t n_tests    = 0;
@@ -29,6 +35,7 @@ int main()
 
     std::cout << n_hits << std::endl;
 
+#endif
 
     return 0;
 }

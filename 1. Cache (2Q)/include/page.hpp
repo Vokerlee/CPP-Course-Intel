@@ -9,8 +9,8 @@ namespace cch
     template<typename Data>
     class Page
     {
-        int    id_   = 0; // page id
-        Data   data_ = 0; // data
+        int  id_   = 0; // page id
+        Data data_ = 0; // data
 
         static size_t size_; // page size
 
@@ -49,7 +49,6 @@ namespace cch
 
     template<typename Data>
     size_t Page<Data>::size_ = sizeof(Data);
-
 }
 
 #endif // !PAGE_H_

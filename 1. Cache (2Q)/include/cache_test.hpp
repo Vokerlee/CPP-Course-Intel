@@ -60,7 +60,7 @@ namespace cch
                 }
             }
 
-            std::cerr << "Hits: " << hits << std::endl <<
+            std::cerr << "Hits: " << hits << std::endl   <<
                          "Memory accesses: " << n_pages_ << std::endl;
         }
     };
