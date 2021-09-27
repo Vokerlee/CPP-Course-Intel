@@ -1,11 +1,11 @@
-#include "../include/point.hpp"
+#include "../include/line.hpp"
 
 int main()
 {
     std::cout << "Test\n";
 
-    geom::Point kek(1, 2, 3);
+    geom::Line kek({1, 1}, (geom::Point){1, 4});
 
-    std::cout << kek << 5;
+    std::cout << kek;
     return 0;
 }

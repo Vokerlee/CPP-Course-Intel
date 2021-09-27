@@ -14,11 +14,11 @@ namespace geom
     class Line
     {
     public:
-        Point  point_;
-        Vector vector_;
+        Point  point;
+        Vector vector;
 
-        Line(const Point& point,  const Vector& vector);
-        Line(const Point& point1, const Point&  point2);
+        Line(const Point& p,  const Vector& v);
+        Line(const Point& p1, const Point& p2);
 
         Line(const Line& line);
         void operator=(const Line& line);

@@ -10,7 +10,7 @@ namespace geom
 {
     class Point
     {
-        static const size_t TOLERANCE = 1e-4;
+        static const size_t TOLERANCE = 1e-5;
 
     public:
         double x;
@@ -20,9 +20,11 @@ namespace geom
         Point(double x_val = 0, double y_val = 0 , double z_val = 0);
 
         Point(const Point& source);
-        void operator= (const Point& source);
+        void operator=(const Point& source);
 
         Point operator-() const;
+        Point operator+(const Point& source) const;
+        Point operator-(const Point& source) const;
 
         bool operator==(const Point& source) const;
 

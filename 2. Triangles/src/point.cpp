@@ -25,6 +25,16 @@ Point Point::operator-() const
     return {-x, -y, -z};
 }
 
+Point Point::operator+(const Point& source) const
+{
+    return {source.x + x, source.y + y, source.z + z};
+}
+
+Point Point::operator-(const Point& source) const
+{
+    return {x - source.x, y - source.y, z - source.z};
+}
+
 bool Point::operator==(const Point& source) const
 {
     return std::abs(x - source.x) < TOLERANCE &&
@@ -36,11 +46,8 @@ namespace geom
 {
     std::ostream& operator<<(std::ostream& out, const Point& p)
     {
-        out << "(" << p.x << ", " << p.y << ", " << p.z << ")";
+        out << "Point(" << p.x << ", " << p.y << ", " << p.z << ")";
 
         return out;
     }
 }
-
-
-

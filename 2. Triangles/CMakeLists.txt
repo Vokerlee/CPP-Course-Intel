@@ -14,12 +14,14 @@ set(FILE_NAME "geom")
 set(HEADERS
         include/vector.hpp
         include/point.hpp
+        include/line.hpp
 )
 
 set(SOURCES
         src/main.cpp
         src/vector.cpp
         src/point.cpp
+        src/line.cpp
 )
 
 # EXECUTABLE FILE

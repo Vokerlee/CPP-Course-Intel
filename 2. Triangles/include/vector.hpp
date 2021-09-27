@@ -6,6 +6,8 @@
 #include <cstdlib>
 #include <iostream>
 
+#include "point.hpp"
+
 namespace geom
 {
     class Vector
@@ -18,6 +20,7 @@ namespace geom
         double z;
 
         Vector(double x_val = 0, double y_val = 0 , double z_val = 0);
+        Vector(const Point& p1, const Point& p2);
 
         Vector(const Vector& source);
         void   operator= (const Vector& source);
@@ -40,6 +43,8 @@ namespace geom
         void   operator/=(const double value);
 
         friend Vector operator*(const double value, const Vector& source);
+
+        friend std::ostream& operator<<(std::ostream& out, const Vector& v);
 
         double abs() const;
         void normalize();
