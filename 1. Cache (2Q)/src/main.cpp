@@ -39,7 +39,11 @@ int main()
         n_hits += cache.handle_page(test_id);
     }
 
-    std::cout << n_hits << std::endl;
+    std::cout << "=======================================";
+    std::cout << std::endl << "Test started:" << std::endl;
+
+    std::cout << n_hits <<  "  hits" << std::endl;
+    std::cout << n_tests << " tests" << std::endl;
 
 #endif
 
