@@ -24,7 +24,7 @@ namespace cch
                 Page<Data> tail = main_.back();
                 main_.remove_page(tail);
 
-                main_.add_page(page); 
+                main_.add_page(page);
             }
 
             return 1; // hit
@@ -114,6 +114,11 @@ namespace cch
             out_.print();
 
             std::cerr << "\nCache " << this << " printed" << "\n\n\n";
+        }
+
+        size_t size() const
+        {
+            return in_.max_size() + out_.max_size() + main_.max_size();
         }
         
         int handle_page(const Page<Data>& page)

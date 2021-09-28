@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <vector>
+#include <fstream>
 
 namespace cch
 {
@@ -14,19 +15,28 @@ namespace cch
     class CacheTest
     {
         size_t n_pages_;
-        std::vector<Page<Data>> pages_;
+        size_t max_id_;
 
-        static size_t n_tests;
+        std::vector<Page<Data>> pages_;
 
     public:
 
-        CacheTest(size_t n_pages) :
-            n_pages_(n_pages)
+        CacheTest(size_t n_pages, size_t max_id) :
+            n_pages_(n_pages),
+            max_id_(max_id)
         {
             srand(time(NULL));
 
             for (size_t i = 0; i < n_pages; ++i)
-                pages_.push_back(Page<Data>(rand() % n_tests, rand() % n_tests));
+                pages_.push_back(Page<Data>(rand() % max_id, rand() % max_id));
+        }
+
+        void print_test_file(Cache_2Q<Data>& cache, std::ofstream& fout) const
+        {   
+            fout << cache.size() << std::endl << n_pages_ << std::endl;
+
+            for (size_t i = 0; i < n_pages_; i++)
+                fout << pages_[i].id() << std::endl;
         }
 
         void print_data() const
@@ -64,9 +74,6 @@ namespace cch
                          "Memory accesses: " << n_pages_ << std::endl;
         }
     };
-
-    template<typename Data>
-    size_t CacheTest<Data>::n_tests = 5000;
 }
 
 #endif // !Cache_2QEST_H_

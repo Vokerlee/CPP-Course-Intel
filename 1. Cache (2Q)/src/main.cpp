@@ -1,19 +1,25 @@
 #include "../include/2q_cache.hpp"
 #include "../include/cache_test.hpp"
 
-//#define CACHE_TEST
+//#define GENERATE_TEST
 
 int main()
 {
 
-#ifdef CACHE_TEST
-    cch::CacheTest<int> test(1000000);
-    cch::Cache_2Q<int>  cache(5000);
+#ifdef GENERATE_TEST
+    cch::CacheTest<int> test(10000, 800);
+    cch::Cache_2Q<int>  cache(800);
+
+    std::ofstream fout;
+    fout.open("../tests/10k.txt");
 
     //test.print_data();
     test.test_cache(cache);
+    test.print_test_file(cache, fout);
 
     //cache.print();
+
+    fout.close();
 
 #else
 

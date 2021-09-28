@@ -11,14 +11,17 @@
 
 namespace cch
 {
-    static const size_t CACHE_MEM_DEFAULT_SIZE = 0x20;
+    template <typename Data>
+    using EListIt = typename std::list<Data>::iterator;
+
+    static const size_t CACHE_MEM_DEFAULT_SIZE = 0x200;
 
     template<typename Data>
     class CacheMem
     {
     private:
-        std::list<Data> list_;                       // for quick insertion and sequential access
-        std::unordered_map<int, Data*> hash_table_;  // for quick insertion and quick      access
+        std::list<Data> list_;       // for quick insertion and sequential access
+        std::unordered_map<int, EListIt<Data>> hash_table_;  // for quick insertion and quick      access
 
         size_t mem_size_; // total size of cache buffer
         size_t cur_size_;
@@ -30,10 +33,7 @@ namespace cch
         CacheMem(size_t size = CACHE_MEM_DEFAULT_SIZE) :
             mem_size_(size),
             cur_size_(0)
-        {
-            for (size_t i = 0; i < size; ++i) // initial filling
-                list_.push_back(Data());
-        }
+        {}
 
         CacheMem(const CacheMem<Data>& source)       = delete;
         void operator=(const CacheMem<Data>& source) = delete;
@@ -67,39 +67,36 @@ namespace cch
 
     // Management
 
-        void add_page(Data page)
+        void add_page(const Data& page)
         {
             if (cur_size_ < mem_size_)
             {
                 // Insert new element
                 list_.push_front(page);
-                hash_table_.insert({page.id(), &page}); // not to copy the page
-
-                // Delete old element
-                Data* deleted = &list_.back();
-                hash_table_.erase(deleted->id());
-                list_.pop_back();
+                EListIt<Data> iter = list_.begin();
+                hash_table_.insert({page.id(), iter});
 
                 cur_size_++;
             }
         }
 
-        void remove_page(Data page)
+        void remove_page(const Data& page)
         {
             if (cur_size_ > 0)
             {
                 // Buffer should be constant length
+                const EListIt<Data> to_delete = hash_table_[page.id()];
+                list_.erase(to_delete);
                 hash_table_.erase(page.id());
-                list_.remove(page);
-                list_.push_back(Data());
 
                 cur_size_--;
             }  
         }
 
-        void update_page(Data page)
+        void update_page(const Data& page)
         {
-            list_.remove(page);
+            const EListIt<Data> page_iter = hash_table_[page.id()];
+            list_.erase(page_iter);
             list_.push_front(page);
         }
 
@@ -107,10 +104,7 @@ namespace cch
 
         bool page_at(int id) const
         {
-            if (hash_table_.find(id) == hash_table_.end())
-                return false;
-            else
-                return true;
+            return hash_table_.find(id) != hash_table_.end();
         }
 
         Data back() const
