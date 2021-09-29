@@ -28,7 +28,7 @@ add_executable(${FILE_NAME} ${SOURCES})
 
 # ASSEMBLY OPTIONS
 set_target_properties(${FILE_NAME} PROPERTIES
-    CXX_STANDARD          14
+    CXX_STANDARD          20
     CXX_STANDARD_REQUIRED ON
 )
 

@@ -3,6 +3,9 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <chrono>
+#include <ctime> 
+#include <iomanip>
 
 #include "cache_mem.hpp"
 
@@ -57,7 +60,7 @@ namespace cch
     public:
 
         Cache_2Q() = delete;
-        Cache_2Q(size_t n_pages, double k_out = 0.5, double k_in = 0.21)
+        Cache_2Q(size_t n_pages, double k_out = 0.6, double k_in = 0.2)
         {
             // Sizes of 2Q cache buffers
 
@@ -116,6 +119,20 @@ namespace cch
             std::cerr << "\nCache " << this << " printed" << "\n\n\n";
         }
 
+        void dump(std::ofstream& fout) const
+        {
+            fout << "Printing 2Q cache at address: " << this << std::endl;
+
+            fout << "\n\t printing \"in_\"   memory: " << std::endl;
+            in_.dump(fout);
+            fout << "\n\t printing \"main\" memory: " << std::endl;
+            main_.dump(fout);
+            fout << "\n\t printing \"out\"  memory: " << std::endl;
+            out_.dump(fout);
+
+            fout << "\nCache " << this << " is printed" << "\n\n\n";
+        }
+
         size_t size() const
         {
             return in_.max_size() + out_.max_size() + main_.max_size();
@@ -123,15 +140,15 @@ namespace cch
         
         int handle_page(const Page<Data>& page)
         {
-            if (in_.page_at(page.id()))
+            if (in_.contains(page.id()))
             {
                 in_.update_page(page);
 
                 return 1; // hit
             }
-            else if (main_.page_at(page.id()))
+            else if (main_.contains(page.id()))
                 return 1; // hit
-            else if (out_.page_at(page.id()))
+            else if (out_.contains(page.id()))
                 return out_policy(page); // hit
             else
                 return add_policy(page); // miss

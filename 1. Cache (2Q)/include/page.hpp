@@ -3,14 +3,15 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <fstream>
 
 namespace cch
 {
     template<typename Data>
     class Page
     {
-        int  id_   = 0; // page id
-        Data data_ = 0; // data
+        int  id_;   // page id
+        Data data_; // data
 
         static size_t size_; // page size
 
@@ -43,7 +44,12 @@ namespace cch
 
         void print() const
         {
-            std::cerr << "Page ID: " << id_ << " " << "Page size: " << size_ << " " << "Page data " << data_ << std::endl;
+            std::cerr << "Page: ID = " << id_ << " " << ", size = " << size_ << " " << "data = " << data_ << std::endl;
+        }
+
+        void dump(std::ofstream& fout) const
+        {
+            fout << "Page: ID = " << id_ << " " << ", size = " << size_ << " " << "data = " << data_ << std::endl;
         }
     };
 

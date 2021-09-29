@@ -12,7 +12,7 @@
 namespace cch
 {
     template<typename Data>
-    class CacheTest
+    class CacheGen
     {
         size_t n_pages_;
         size_t max_id_;
@@ -21,7 +21,7 @@ namespace cch
 
     public:
 
-        CacheTest(size_t n_pages, size_t max_id) :
+        CacheGen(size_t n_pages, size_t max_id) :
             n_pages_(n_pages),
             max_id_(max_id)
         {

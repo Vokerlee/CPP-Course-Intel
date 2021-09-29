@@ -1,25 +1,26 @@
 #include "../include/2q_cache.hpp"
-#include "../include/cache_test.hpp"
+#include "../include/gen_test.hpp"
 
 //#define GENERATE_TEST
+#define LOG_ON
 
 int main()
 {
 
 #ifdef GENERATE_TEST
-    cch::CacheTest<int> test(10000, 800);
-    cch::Cache_2Q<int>  cache(800);
+    cch::CacheGen<int> test(10000, 800);
+    cch::Cache_2Q<int> cache_test(800);
 
-    std::ofstream fout;
-    fout.open("../tests/10k.txt");
+    std::ofstream fout_test;
+    fout_test.open("../tests/10k.txt");
 
     //test.print_data();
-    test.test_cache(cache);
-    test.print_test_file(cache, fout);
+    test.test_cache(cache_test);
+    test.print_test_file(cache_test, fout_test);
 
-    //cache.print();
+    //cache_test.print();
 
-    fout.close();
+    fout_test.close();
 
 #else
 
@@ -36,15 +37,28 @@ int main()
     for (size_t i = 0; i < n_tests; ++i)
     {
         std::cin >> test_id;
-        n_hits += cache.handle_page(test_id);
+        n_hits += cache.handle_page(cch::Page<int>(test_id));     
     }
 
-    std::cout << "=======================================";
-    std::cout << std::endl << "Test started:" << std::endl;
+    std::cout << n_hits;
 
-    std::cout << n_hits <<  "  hits" << std::endl;
-    std::cout << n_tests << " tests" << std::endl;
+#ifdef LOG_ON
 
+    auto now       = std::chrono::system_clock::now();
+    auto in_time_t = std::chrono::system_clock::to_time_t(now);
+
+    std::stringstream ss;
+    ss << std::put_time(std::localtime(&in_time_t), "%Y-%m-%d %r");
+
+    std::ofstream log;
+    log.open("cache_log " + ss.str());
+
+    cache.dump(log);
+
+    log.close();
+
+#endif
+    
 #endif
 
     return 0;

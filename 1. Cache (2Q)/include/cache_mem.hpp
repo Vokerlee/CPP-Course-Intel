@@ -73,7 +73,7 @@ namespace cch
             {
                 // Insert new element
                 list_.push_front(page);
-                EListIt<Data> iter = list_.begin();
+                const EListIt<Data> iter = list_.begin();
                 hash_table_.insert({page.id(), iter});
 
                 cur_size_++;
@@ -98,13 +98,14 @@ namespace cch
             const EListIt<Data> page_iter = hash_table_[page.id()];
             list_.erase(page_iter);
             list_.push_front(page);
+            hash_table_[page.id()] = list_.begin();
         }
 
     // Info
 
-        bool page_at(int id) const
+        bool contains(int id) const
         {
-            return hash_table_.find(id) != hash_table_.end();
+            return hash_table_.contains(id);
         }
 
         Data back() const
@@ -126,12 +127,21 @@ namespace cch
         
         void print() const
         {
-            std::cerr << "Printing memory: "     << this      << std::endl;
-            std::cerr << "Memory size: "         << mem_size_ << std::endl;
+            std::cerr << "Address of memory: "   << this      << std::endl;
+            std::cerr << "Memory capacity: "     << mem_size_ << std::endl;
             std::cerr << "Memory current size: " << cur_size_ << std::endl;
+        }
+
+        void dump(std::ofstream& fout) const
+        {
+            fout << "Address of memory: "   << this      << std::endl;
+            fout << "Memory capacity: "     << mem_size_ << std::endl;
+            fout << "Memory current size: " << cur_size_ << std::endl;
+
+            fout << "Pages dump:" << std::endl;
 
             for (auto elem : list_)
-                elem.print();
+                elem.dump(fout);
         }
 
         bool ok() const
