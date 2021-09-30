@@ -20,8 +20,8 @@ namespace cch
     class CacheMem
     {
     private:
-        std::list<Data> list_;       // for quick insertion and sequential access
-        std::unordered_map<int, EListIt<Data>> hash_table_;  // for quick insertion and quick      access
+        std::list<Data> list_; // for quick insertion and sequential access
+        std::unordered_map<int, EListIt<Data>> hash_table_; // for quick insertion and quick access
 
         size_t mem_size_; // total size of cache buffer
         size_t cur_size_;
@@ -66,6 +66,11 @@ namespace cch
         }
 
     // Management
+
+        Data& get_page(int id)
+        {
+            return *(hash_table_.[id]);
+        }
 
         void add_page(const Data& page)
         {

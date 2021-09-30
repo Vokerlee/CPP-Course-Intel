@@ -18,6 +18,12 @@ namespace cch
         CacheMem<Page<Data>> main_;
         CacheMem<Page<Data>> out_;
 
+        enum class CacheHit
+        {
+            HIT  = 1,
+            MISS = 0
+        };
+
         int out_policy(const Page<Data>& page)
         {
             if (main_.size() < main_.max_size())
@@ -30,7 +36,7 @@ namespace cch
                 main_.add_page(page);
             }
 
-            return 1; // hit
+            return static_cast<int>(CacheHit::HIT);
         }
 
         int add_policy(const Page<Data>& page)
@@ -54,7 +60,7 @@ namespace cch
                 }
             }
 
-            return 0; // miss
+            return static_cast<int>(CacheHit::MISS);
         }
 
     public:
@@ -109,7 +115,7 @@ namespace cch
         {
             std::cerr << "\n\n" << "Printing 2Q cache at: " << this << std::endl;
 
-            std::cerr << "\n\t printing \"in_\"   memory: " << std::endl;
+            std::cerr << "\n\t printing \"in_\"  memory: " << std::endl;
             in_.print();
             std::cerr << "\n\t printing \"main\" memory: " << std::endl;
             main_.print();
@@ -123,7 +129,7 @@ namespace cch
         {
             fout << "Printing 2Q cache at address: " << this << std::endl;
 
-            fout << "\n\t printing \"in_\"   memory: " << std::endl;
+            fout << "\n\t printing \"in_\"  memory: " << std::endl;
             in_.dump(fout);
             fout << "\n\t printing \"main\" memory: " << std::endl;
             main_.dump(fout);
@@ -138,16 +144,36 @@ namespace cch
             return in_.max_size() + out_.max_size() + main_.max_size();
         }
         
+        Data& get_page(int id)
+        {
+            if (in_.contains(id))
+            {
+                in_.update_page(page);
+
+                return in_.get_page(id).data();
+            }
+            else if (main_.contains(page.id()))
+                return main_.get_page(id).data();
+            else if (out_.contains(page.id()))
+                return out_.get_page(id).data();
+            else
+            {
+                add_policy(Page<Data>(id)); // miss
+
+                return in_.get_page(id).data();
+            }
+        }
+
         int handle_page(const Page<Data>& page)
         {
             if (in_.contains(page.id()))
             {
                 in_.update_page(page);
 
-                return 1; // hit
+                return static_cast<int>(CacheHit::HIT);
             }
             else if (main_.contains(page.id()))
-                return 1; // hit
+                return static_cast<int>(CacheHit::HIT);
             else if (out_.contains(page.id()))
                 return out_policy(page); // hit
             else

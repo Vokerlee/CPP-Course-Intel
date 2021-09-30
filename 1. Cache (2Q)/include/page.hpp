@@ -32,7 +32,7 @@ namespace cch
             return size_;
         }
 
-        Data data() const
+        Data& data() const
         {
             return data_;
         }

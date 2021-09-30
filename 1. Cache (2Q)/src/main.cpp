@@ -1,28 +1,9 @@
-#include "../include/2q_cache.hpp"
-#include "../include/gen_test.hpp"
+#include "2q_cache.hpp"
 
-//#define GENERATE_TEST
-#define LOG_ON
+//#define LOG_ON
 
 int main()
 {
-
-#ifdef GENERATE_TEST
-    cch::CacheGen<int> test(10000, 800);
-    cch::Cache_2Q<int> cache_test(800);
-
-    std::ofstream fout_test;
-    fout_test.open("../tests/10k.txt");
-
-    //test.print_data();
-    test.test_cache(cache_test);
-    test.print_test_file(cache_test, fout_test);
-
-    //cache_test.print();
-
-    fout_test.close();
-
-#else
 
     size_t cache_size = 0;
     size_t n_tests    = 0;
@@ -40,7 +21,7 @@ int main()
         n_hits += cache.handle_page(cch::Page<int>(test_id));     
     }
 
-    std::cout << n_hits;
+    std::cout << n_hits << std::endl;
 
 #ifdef LOG_ON
 
@@ -57,8 +38,6 @@ int main()
 
     log.close();
 
-#endif
-    
 #endif
 
     return 0;
