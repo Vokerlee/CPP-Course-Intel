@@ -65,7 +65,6 @@ namespace cch
 
     public:
 
-        Cache_2Q() = delete;
         Cache_2Q(size_t n_pages, double k_out = 0.6, double k_in = 0.2)
         {
             // Sizes of 2Q cache buffers
@@ -148,17 +147,21 @@ namespace cch
         {
             if (in_.contains(id))
             {
-                in_.update_page(page);
+                in_.update_page(id);
 
                 return in_.get_page(id).data();
             }
-            else if (main_.contains(page.id()))
+            else if (main_.contains(id))
                 return main_.get_page(id).data();
-            else if (out_.contains(page.id()))
+            else if (out_.contains(id))
+            {
+                out_policy(id);
+
                 return out_.get_page(id).data();
+            }
             else
             {
-                add_policy(Page<Data>(id)); // miss
+                add_policy(id); // miss
 
                 return in_.get_page(id).data();
             }

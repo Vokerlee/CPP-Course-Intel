@@ -69,7 +69,7 @@ namespace cch
 
         Data& get_page(int id)
         {
-            return *(hash_table_.[id]);
+            return *(hash_table_[id]);
         }
 
         void add_page(const Data& page)
@@ -85,24 +85,36 @@ namespace cch
             }
         }
 
-        void remove_page(const Data& page)
+        void remove_page(const int id)
         {
             if (cur_size_ > 0)
             {
                 // Buffer should be constant length
-                const EListIt<Data> to_delete = hash_table_[page.id()];
+                const EListIt<Data> to_delete = hash_table_[id];
                 list_.erase(to_delete);
-                hash_table_.erase(page.id());
+                hash_table_.erase(id);
 
                 cur_size_--;
             }  
+        }
+
+        void remove_page(const Data& page)
+        {
+            remove_page(page.id());
+        }
+
+        void update_page(const int id)
+        {
+            const EListIt<Data> page_iter = hash_table_[id];
+            list_.splice(list_.begin(), list_, page_iter); // slower?
+            hash_table_[id] = list_.begin();
         }
 
         void update_page(const Data& page)
         {
             const EListIt<Data> page_iter = hash_table_[page.id()];
             list_.erase(page_iter);
-            list_.push_front(page);
+            list_.push_front(page); // faster?
             hash_table_[page.id()] = list_.begin();
         }
 
