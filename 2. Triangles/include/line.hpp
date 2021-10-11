@@ -18,6 +18,7 @@ namespace geom
         Point  point;
         Vector vector;
 
+        Line() = default;
         Line(const Point& p,  const Vector& v);
         Line(const Point& p1, const Point& p2);
         Line(const Plane& p1, const Plane& p2);

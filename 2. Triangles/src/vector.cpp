@@ -68,12 +68,12 @@ bool Vector::operator<(const Vector& source) const
     return (this->abs() - source.abs()) <= TOLERANCE;
 }
 
-Vector Vector::operator* (const double value) const
+Vector Vector::operator*(const double value) const
 {
     return {x * value, y * value, z * value};
 }
 
-Vector Vector::operator/ (const double value) const
+Vector Vector::operator/(const double value) const
 {
     return {x / value, y / value, z / value};
 }
@@ -92,36 +92,47 @@ void Vector::operator/=(const double value)
     z /= value;
 }
 
-Vector operator*(const double value, const Vector& source)
-{
-    return {source.x * value, source.y * value, source.z * value};
-}
-
 double Vector::abs() const
 {
     return std::sqrt(x * x + y * y + z * z);
 }
 
+Vector& Vector::normalize()
+{
+    double abs = this->abs();
+    x = x / abs;
+    y = y / abs;
+    z = z / abs;
+
+    return *this;
+}
+
 namespace geom
 {
+    Vector operator*(const double value, const Vector& source)
+    {
+        return {source.x * value, source.y * value, source.z * value};
+    }
+
     std::ostream& operator<<(std::ostream& out, const Vector& v)
     {
         out << "Vector(" << v.x << ", " << v.y << ", " << v.z << ")";
 
         return out;
     }
+
+    Vector vector_product(const Vector& v1, const Vector& v2)
+    {
+        double x = v1.y * v2.z - v1.z * v2.y;
+        double y = v1.z * v2.x - v1.x * v2.z;
+        double z = v1.x * v2.y - v1.y * v2.x;
+
+        return Vector(x, y, z);
+    }
+
+    double scalar_product(const Vector& v1, const Vector& v2)
+    {
+        return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+    }
 }
 
-Vector vector_product(const Vector& v1, const Vector& v2)
-{
-    double x = v1.y * v2.z - v1.z * v2.y;
-    double y = v1.z * v2.x - v1.x * v2.z;
-    double z = v1.x * v2.y - v1.y * v2.x;
-
-    return Vector(x, y, z);
-}
-
-double scalar_product(const Vector& v1, const Vector& v2)
-{
-    return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
-}

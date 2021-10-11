@@ -44,7 +44,7 @@ namespace geom
         friend std::ostream& operator<<(std::ostream& out, const Vector& v);
 
         double abs() const;
-        void normalize();
+        Vector& normalize();
     };
 
     Vector vector_product(const Vector& v1, const Vector& v2);

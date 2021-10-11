@@ -15,6 +15,8 @@ set(HEADERS
         include/vector.hpp
         include/point.hpp
         include/line.hpp
+        include/plane.hpp
+        include/triangle.hpp
 )
 
 set(SOURCES
@@ -22,6 +24,8 @@ set(SOURCES
         src/vector.cpp
         src/point.cpp
         src/line.cpp
+        src/plane.cpp
+        src/triangle.cpp
 )
 
 # EXECUTABLE FILE

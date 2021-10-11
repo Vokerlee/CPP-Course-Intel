@@ -1,5 +1,6 @@
 #include "../include/line.hpp"
 #include "../include/plane.hpp"
+#include "../include/vector.hpp"
 
 using namespace geom;
 
