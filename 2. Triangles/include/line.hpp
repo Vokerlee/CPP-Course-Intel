@@ -3,6 +3,7 @@
 
 #include "point.hpp"
 #include "vector.hpp"
+#include "plane.hpp"
 
 #include <cmath>
 #include <fstream>
@@ -19,9 +20,7 @@ namespace geom
 
         Line(const Point& p,  const Vector& v);
         Line(const Point& p1, const Point& p2);
-
-        Line(const Line& line);
-        void operator=(const Line& line);
+        Line(const Plane& p1, const Plane& p2);
 
         bool operator==(const Line& line) const;
 

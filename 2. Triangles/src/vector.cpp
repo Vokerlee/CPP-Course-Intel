@@ -1,4 +1,5 @@
 #include "../include/vector.hpp"
+#include "../include/point.hpp"
 
 using namespace geom;
 
@@ -11,20 +12,6 @@ Vector::Vector(const Point& p1, const Point& p2)
     x = p2.x - p1.x;
     y = p2.y - p1.y;
     z = p2.z - p1.z;
-}
-
-Vector::Vector(const Vector& source)
-{
-    x = source.x;
-    y = source.y;
-    z = source.z;
-}
-
-void Vector::operator=(const Vector& source)
-{
-    x = source.x;
-    y = source.y;
-    z = source.z;
 }
 
 Vector Vector::operator+(const Vector& source) const
@@ -123,4 +110,18 @@ namespace geom
 
         return out;
     }
+}
+
+Vector vector_product(const Vector& v1, const Vector& v2)
+{
+    double x = v1.y * v2.z - v1.z * v2.y;
+    double y = v1.z * v2.x - v1.x * v2.z;
+    double z = v1.x * v2.y - v1.y * v2.x;
+
+    return Vector(x, y, z);
+}
+
+double scalar_product(const Vector& v1, const Vector& v2)
+{
+    return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 }

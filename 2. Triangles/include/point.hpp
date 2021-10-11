@@ -8,6 +8,10 @@
 
 namespace geom
 {
+    class Vector;
+    class Line;
+    class Plane;
+
     class Point
     {
         static const size_t TOLERANCE = 1e-5;
@@ -18,15 +22,15 @@ namespace geom
         double z;
 
         Point(double x_val = 0, double y_val = 0 , double z_val = 0);
-
-        Point(const Point& source);
-        void operator=(const Point& source);
+        Point(const Plane& pl, const Line& l);
 
         Point operator-() const;
         Point operator+(const Point& source) const;
         Point operator-(const Point& source) const;
 
         bool operator==(const Point& source) const;
+
+        explicit operator Vector() const;
 
         friend std::ostream& operator<<(std::ostream& out, const Point& p);
     };

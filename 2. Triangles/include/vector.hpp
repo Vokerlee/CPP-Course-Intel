@@ -6,13 +6,13 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "point.hpp"
-
 namespace geom
 {
+    class Point;
+    
     class Vector
     {
-        static const size_t TOLERANCE = 1e-4;
+        static const size_t TOLERANCE = 1e-5;
 
     public:
         double x;
@@ -21,9 +21,6 @@ namespace geom
 
         Vector(double x_val = 0, double y_val = 0 , double z_val = 0);
         Vector(const Point& p1, const Point& p2);
-
-        Vector(const Vector& source);
-        void   operator= (const Vector& source);
 
         Vector operator+ (const Vector& source) const;
         Vector operator- (const Vector& source) const;
@@ -49,6 +46,9 @@ namespace geom
         double abs() const;
         void normalize();
     };
+
+    Vector vector_product(const Vector& v1, const Vector& v2);
+    double scalar_product(const Vector& v1, const Vector& v2);
 }
 
 #endif // !VECTOR_H_
