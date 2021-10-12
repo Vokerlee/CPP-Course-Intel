@@ -14,7 +14,7 @@ namespace geom
 
     class Point
     {
-        static const size_t TOLERANCE = 1e-5;
+        constexpr static double TOLERANCE = 1e-5;
 
     public:
         double x;

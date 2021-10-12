@@ -14,7 +14,7 @@ Point::Point(const Plane& pl, const Line& l)
     Vector normal = pl.get_normal();
     Vector direction = l.vector;
 
-    double scalar = scalar_product(normal, direction);
+    double scalar = scalar_product(normal, direction); // != 0, cuz it was checked in advance
 
     double d = (-1) *  scalar_product(normal, static_cast<Vector>(pl.point));
     double t = (-1) * (scalar_product(normal, static_cast<Vector>(l.point)) + d) / scalar;

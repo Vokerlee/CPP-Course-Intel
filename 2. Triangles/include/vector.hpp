@@ -12,7 +12,7 @@ namespace geom
     
     class Vector
     {
-        static const size_t TOLERANCE = 1e-5;
+        constexpr static double TOLERANCE = 1e-5;
 
     public:
         double x;
@@ -29,6 +29,7 @@ namespace geom
         Vector operator- ()                     const;
 
         bool   operator==(const Vector& source) const;
+        bool   operator!=(const Vector& source) const;
         bool   operator>=(const Vector& source) const;
         bool   operator> (const Vector& source) const;
         bool   operator<=(const Vector& source) const;

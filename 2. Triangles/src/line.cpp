@@ -18,6 +18,7 @@ Line::Line(const Plane& p1, const Plane& p2)
     Vector n2 = p2.get_normal();
 
     Vector direction = vector_product(n1, n2);
+    vector = direction;
 
     if (direction == Vector())
     {
@@ -29,15 +30,13 @@ Line::Line(const Plane& p1, const Plane& p2)
         n1.normalize();
         n2.normalize();
 
-        double n1_n2_prod = scalar_product(n1, n2);
-        double n1_prod    = scalar_product(n1, n1);
-        double n2_prod    = scalar_product(n2, n2);
+        double cos_n1_n2 = scalar_product(n1, n2);
 
         double s1 = scalar_product(n1, static_cast<Vector>(p1.point));
         double s2 = scalar_product(n2, static_cast<Vector>(p2.point));
 
-        double a = (s2 * n1_n2_prod - s1 * n2_prod) / (n1_n2_prod * n1_n2_prod - n1_prod * n2_prod);
-        double b = (s1 * n1_n2_prod - s2 * n2_prod) / (n1_n2_prod * n1_n2_prod - n1_prod * n2_prod);
+        double a = (s2 * cos_n1_n2 - s1) / (cos_n1_n2 * cos_n1_n2 - 1);
+        double b = (s1 * cos_n1_n2 - s2) / (cos_n1_n2 * cos_n1_n2 - 1);
 
         Vector temp(a * n1 + b * n2);
 
@@ -54,7 +53,7 @@ namespace geom
 {
     std::ostream& operator<<(std::ostream& out, const Line& l)
     {
-        out << "(" << l.vector << ", " << l.point << ")";
+        out << "Line(" << l.vector << ", " << l.point << ")";
 
         return out;
     }

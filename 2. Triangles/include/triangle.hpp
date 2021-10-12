@@ -3,6 +3,7 @@
 
 #include "point.hpp"
 #include "vector.hpp"
+#include "plane.hpp"
 
 #include <cmath>
 #include <fstream>
@@ -14,7 +15,7 @@ namespace geom
 {
     class Triangle
     {
-        static const size_t TOLERANCE = 1e-5;
+        constexpr static double TOLERANCE = 1e-5;
 
     public:
         Point point1;
@@ -33,6 +34,8 @@ namespace geom
         friend double calc_parameter(const Point& point, const Line& line);
         friend std::pair<Line, Line> get_lines(const Triangle& t, const Plane& pl);
     };
+
+    double calc_parameter(const Point& point, const Line& line);
 }
 
 #endif // !TRIANGLE_H_

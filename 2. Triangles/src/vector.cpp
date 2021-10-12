@@ -48,6 +48,11 @@ bool Vector::operator==(const Vector& source) const
     return std::abs(this->abs() - source.abs()) < TOLERANCE;
 }
 
+bool Vector::operator!=(const Vector& source) const
+{
+    return !operator==(source);
+}
+
 bool Vector::operator>=(const Vector& source) const
 {
     return (this->abs() - source.abs()) >= -TOLERANCE;

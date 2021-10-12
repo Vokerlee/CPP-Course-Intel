@@ -26,7 +26,13 @@ bool Triangle::operator==(const Triangle& tr) const
 
 bool Triangle::is_degenerate() const
 {
-    return (point1 == point2 || point1 == point2 || point1 == point2);
+    Vector a(point3 - point1);
+    Vector b(point2 - point1);
+
+    if (vector_product(a, b) != Vector())
+        return false;
+
+    return true;
 }
 
 namespace geom
@@ -41,21 +47,14 @@ namespace geom
     bool intersect(const Triangle& tr1, const Triangle& tr2) 
     {
     // Checking for degeneration (not being a triangle)
-        std::cout << "Checking if degenerate: " << std::endl;
         if (tr1.is_degenerate() || tr2.is_degenerate())
-        {
-            std::cout << "Degenerate.\n\n\n";
             return false;
-        }
 
     // Triangles -> planes
-        std::cout << "Computing plane equation of tr1..." << std::endl;
         Plane pl1(tr1);
         Plane pl2(tr2);
 
     // Calculate distances from tr2 vertices to pl1
-        std::cout << "Computing distances from tr2 vertices to plane pl1..." << std::endl;
-
         double d1 = calc_dist(tr2.point1, pl1);
         double d2 = calc_dist(tr2.point2, pl1);
         double d3 = calc_dist(tr2.point3, pl1);
@@ -66,56 +65,37 @@ namespace geom
 
     // If all the distances are of the same sign, exit
         if ((d1 > 0 && d2 > 0 && d3 > 0) || (d1 < 0 && d2 < 0 && d3 < 0))
-        {
-            std::cout << "All of the same size." << std::endl;
             return false;
-        }
-
-        std::cout << "Computing plane equation of tr2..." << std::endl;
 
     // If parallel, exit
-        std::cout << "Checking if planes are parallel..." << std::endl;
-        
-        if (pl2.is_parallel(pl1) && !(pl2 == pl1))
-            return false;
-
         if (pl2 == pl1)
             return true;
 
-    // Compare distances from triangle tr1 to plane pl2. If they are all of the same sign, exit
-        std::cout << "Computing distances from tr1 vertices to plane pl2...." << std::endl;
+        if (pl2.is_parallel(pl1))
+            return false;
 
-        float a1 = calc_dist(tr1.point1, pl2);
-        float a2 = calc_dist(tr1.point2, pl2);
-        float a3 = calc_dist(tr1.point3, pl2);
+    // Compare distances from triangle tr1 to plane pl2. If they are all of the same sign, exit
+        double a1 = calc_dist(tr1.point1, pl2);
+        double a2 = calc_dist(tr1.point2, pl2);
+        double a3 = calc_dist(tr1.point3, pl2);
 
         if (std::abs(d1) < Triangle::TOLERANCE || std::abs(d2) < Triangle::TOLERANCE || std::abs(d3) < Triangle::TOLERANCE)
             return false;
         
     // If they are all of the same sign, exit
         if ((d1 > 0 && d2 > 0 && d3 > 0) || (d1 < 0 && d2 < 0 && d3 < 0))
-        {
-            std::cout << "All of the same sign." << std::endl;
             return false;
-        }
 
     // Line of intersections
-        std::cout << "Computing plane intersection line..." << std::endl;
         Line intersection_line(pl1, pl2);
 
     // Calc intervals and check intersection
-        std::cout << "Computing intervals..." << std::endl;
-        
         std::vector<double> params = calc_intervals(intersection_line, tr1, tr2);
-        double t00 = params[0];
-        double t01 = params[1];
-        double t10 = params[2];
-        double t11 = params[3];
 
-        std::cout << "Calculated t values: " << std::endl;
-        std::cout << t00 << ", " << t01 << ", " << t10 << ", " << t11 << std::endl;
+        // std::cout << "Calculated t values: \n\n" << std::endl;
+        // std::cout << t00 << ", " << t01 << ", " << t10 << ", " << t11 << std::endl;
 
-        if (std::min(t10, t11) > std::max(t00, t01) || std::min(t00, t01) > std::max(t10, t11))
+        if (std::min(params[2], params[3]) > std::max(params[0], params[1]) || std::min(params[0], params[1]) > std::max(params[2], params[3]))
             return false;
         else
             return true; 
@@ -147,8 +127,8 @@ namespace geom
         Line l2 = lines.second;
 
         // Calculate intersection points
-        Point intersection_point_1(pl1, l1);
-        Point intersection_point_2(pl1, l2);
+        Point intersection_point_1(pl2, l1);
+        Point intersection_point_2(pl2, l2);
 
         // Calculate parameter values
         double t11 = calc_parameter(intersection_point_1, l);
@@ -214,4 +194,3 @@ namespace geom
         return std::make_pair(l1, l2);
     }
 }
-

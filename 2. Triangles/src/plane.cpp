@@ -58,7 +58,7 @@ namespace geom
 {
     std::ostream& operator<<(std::ostream& out, const Plane& plane)
     {
-        out << "(" << plane.point << ", " << plane.vector1 << ", " << plane.vector2 << ")";
+        out << "Plane(" << plane.point << ", " << plane.vector1 << ", " << plane.vector2 << ")";
 
         return out;
     }

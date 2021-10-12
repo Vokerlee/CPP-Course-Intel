@@ -9,9 +9,10 @@ project ("Triangles" LANGUAGES CXX)
 #########################################################################
 
 # EXECUTABLE FILE PROPERTIES
-set(FILE_NAME "geom")
+set(FILE_NAME       "triangle")
+set(TESTS_FILE_NAME "tr_tests")
 
-set(HEADERS
+set(TRIANGLE_HEADERS
         include/vector.hpp
         include/point.hpp
         include/line.hpp
@@ -19,7 +20,7 @@ set(HEADERS
         include/triangle.hpp
 )
 
-set(SOURCES
+set(TRIANGLE_SOURCES
         src/main.cpp
         src/vector.cpp
         src/point.cpp
@@ -28,8 +29,23 @@ set(SOURCES
         src/triangle.cpp
 )
 
+set(TESTS_SOURCES
+        src/tests.cpp  
+        src/vector.cpp
+        src/point.cpp
+        src/line.cpp
+        src/plane.cpp
+        src/triangle.cpp      
+)
+
 # EXECUTABLE FILE
-add_executable(${FILE_NAME} ${SOURCES})
+add_executable(${FILE_NAME}       ${TRIANGLE_SOURCES})
+add_executable(${TESTS_FILE_NAME} ${TESTS_SOURCES})
+
+target_include_directories(${FILE_NAME}       PRIVATE include)
+target_include_directories(${TESTS_FILE_NAME} PRIVATE include)
+
+target_link_libraries(${TESTS_FILE_NAME} gtest)
 
 #########################################################################
 
