@@ -10,6 +10,8 @@ using namespace geom;
 
 const double TOLERANCE = 1e-4;
 
+// GENERAL GEOMETRY TESTS
+
 //=========================================================
 
 TEST(Triangles, PointEqual)
@@ -200,11 +202,49 @@ TEST(Triangles, PointPlaneDistance)
     
     Point p(6, 10, -23);
 
-    double dist = 25.7883;
-    double computed_dist = calc_dist(p, pl);
+    double real_dist = 25.7883;
+    double dist = calc_dist(p, pl);
 
     double precision = 1e-4;
-    ASSERT_TRUE(std::abs(dist - computed_dist) < precision);
+    ASSERT_TRUE(std::abs(real_dist - dist) < precision);
+}
+
+//=========================================================
+
+TEST(Triangles, PointLineDistance)
+{
+    Vector s(2, 1, 2);
+    Point  p(3, 1, -1);
+    Line l(p ,s);
+    Point m(0, 2, 3);
+
+    double dist = calc_dist(m, l);
+    double real_dist = 5;
+
+    ASSERT_TRUE(std::abs(dist - real_dist) < TOLERANCE);
+}
+
+//=========================================================
+
+TEST(Triangles, EqualPlaneSide)
+{
+    Vector v1_line(1, 1, 0);
+    Point p1_line(0, 0, 0);
+
+    Point p11(2, 1, 0);
+    Point p12(1, 2, 0);
+    Line line1(p1_line, v1_line);
+
+    ASSERT_FALSE(equal_plane_side(p11, p12, line1));
+
+    Vector v2_line(1, 3, 2);
+    Point p2_line(2, 1, 3);
+
+    Point p21(0, 0, 0);
+    Point p22(10, 20 ,30);
+    Line line2(p2_line, v2_line);
+
+    ASSERT_FALSE(equal_plane_side(p21, p22, line2));
 }
 
 //=========================================================
@@ -293,6 +333,10 @@ TEST(Triangles, LinePlaneIntersection)
 
 //=========================================================
 
+// SPECIFIC TESTS FOR TRIANGLES
+
+//=========================================================
+
 TEST(Triangles, TrianglePlaneIntervals)
 {
     Point p1(1, 1, 1);
@@ -356,6 +400,53 @@ TEST(Triangles, TrianglePlaneIntervals)
 
 //=========================================================
 
+TEST(Triangles, Triangle2DIntersection)
+{
+    // Common plane 7x + 9y + 2z = 18
+    Point p1(1, 1, 1);
+    Point p2(0, 0, 9);
+    Point p3(0, 2, 0);
+    Point p4(18. / 7., 0, 0);
+    Point p5(0.5, 0.5, 5);
+    Point p6(1, 1. / 3., 4);
+    Point p7(1, 0, 5.5);
+
+    ASSERT_FALSE(intersect2D(Triangle(p2, p5, p6), Triangle(p1, p3, p4))); // outside
+    ASSERT_TRUE(intersect2D(Triangle(p2, p5, p3), Triangle(p1, p2, p6)));  // common vertex p2
+    ASSERT_TRUE(intersect2D(Triangle(p2, p3, p4), Triangle(p5, p1, p7)));  // 1st in the 2nd, but have common point
+    ASSERT_FALSE(intersect2D(Triangle(p2, p3, p4), Triangle(p5, p1, p5))); // 1st in the 2nd at all
+    ASSERT_TRUE(intersect2D(Triangle(p2, p3, p4), Triangle(p7, p6, p4)));  // have common side
+}
+
+//=========================================================
+
+TEST(Triangles, TriangleContains)
+{
+    // Common plane 7x + 9y + 2z = 18
+    Point p1(1, 1, 1);
+    Point p2(0, 0, 9);
+    Point p3(0, 2, 0);
+    Point p4(18. / 7., 0, 0);
+    Point p5(0.5, 0.5, 5);
+    Point p6(1, 1. / 3., 4);
+    Point p7(1, 0, 5.5);
+
+    Triangle tr1(p2, p5, p6);
+    Triangle tr2(p2, p3, p4);
+
+    ASSERT_FALSE(tr1.contains(p1)); // outside
+    ASSERT_FALSE(tr1.contains(p3)); // outside
+    ASSERT_FALSE(tr1.contains(p4)); // outside
+    ASSERT_TRUE(tr2.contains(p4));  // vertex
+    ASSERT_TRUE(tr2.contains(p1));  // inside
+    ASSERT_TRUE(tr2.contains(p5));  // inside
+    ASSERT_TRUE(tr2.contains(p6));  // inside
+    ASSERT_TRUE(tr2.contains(p7));  // side
+    ASSERT_TRUE(tr2.contains(p3));  // vertex
+}
+
+//=========================================================
+
 TEST(Triangles, TrianglePlaneIntersection1)
 {
     Point p1(1, 1, 1);
@@ -387,7 +478,7 @@ TEST(Triangles, TrianglePlaneIntersection2)
     Triangle t0(p1, p2, p3);
     Triangle t1(p4, p5, p6);
 
-    ASSERT_FALSE(intersect(t0, t1));
+    ASSERT_TRUE(intersect(t0, t1));
 }
 
 //=========================================================
@@ -437,7 +528,6 @@ TEST(Triangles, TrianglePlaneIntersection5)
     Point p4(-1, 1, 0);
     Point p5(-3, -3, -3);
     Point p6(2, 1, 2);
-
 
     Triangle t0(p1, p2, p3);
     Triangle t1(p4, p5, p6);
@@ -496,8 +586,7 @@ TEST(Triangles, TrianglePlaneIntersection8)
     Triangle t0(p1, p2, p3);
     Triangle t1(p4, p5, p6);
 
-    // Actually vertex belongs to the side of another triangle, this is yet to be decided whether to considet it an intersection or not
-    ASSERT_FALSE(intersect(t0, t1));
+    ASSERT_TRUE(intersect(t0, t1));
 }
 
 //=========================================================
@@ -515,8 +604,24 @@ TEST(Triangles, TrianglePlaneIntersection9)
     Triangle t0(p1, p2, p3);
     Triangle t1(p4, p5, p6);
 
-    // Here just slightly varying the 1.01 value, we get intersection segment
     ASSERT_TRUE(intersect(t0, t1));
+}
+
+TEST(Triangles, TrianglePlaneIntersection10)
+{
+    Point p1(1, 1, 1);
+    Point p2(0, 0, 9);
+    Point p3(0, 2, 0);
+    Point p4(18. / 7., 0, 0);
+    Point p5(0.5, 0.5, 5);
+    Point p6(1, 1. / 3., 4);
+    Point p7(1, 0, 5.5);
+
+    ASSERT_FALSE(intersect(Triangle(p2, p5, p6), Triangle(p1, p3, p4))); // outside
+    ASSERT_TRUE(intersect(Triangle(p2, p5, p3), Triangle(p1, p2, p6)));  // common vertex p2
+    ASSERT_TRUE(intersect(Triangle(p2, p3, p4), Triangle(p5, p1, p7)));  // 1st in the 2nd, but have common point
+    ASSERT_FALSE(intersect(Triangle(p2, p3, p4), Triangle(p5, p1, p5))); // 1st in the 2nd at all
+    ASSERT_TRUE(intersect(Triangle(p2, p3, p4), Triangle(p7, p6, p4)));  // have common side
 }
 
 

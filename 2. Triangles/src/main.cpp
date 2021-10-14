@@ -29,5 +29,7 @@ int main(int argc, char** argv)
         points.clear();
     }
 
+    // Call functions, calculation triangles that can be intersected by others.
+
     return 0;
 }

@@ -12,7 +12,7 @@ namespace geom
     
     class Vector
     {
-        constexpr static double TOLERANCE = 1e-5;
+        constexpr static double TOLERANCE = 1e-4;
 
     public:
         double x;

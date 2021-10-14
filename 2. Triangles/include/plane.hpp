@@ -16,7 +16,7 @@ namespace geom
 
     class Plane
     {
-        constexpr static double TOLERANCE = 1e-5;
+        constexpr static double TOLERANCE = 1e-4;
 
     public:
         Point  point;
@@ -33,11 +33,9 @@ namespace geom
         Vector get_normal() const;
 
         friend std::ostream& operator<<(std::ostream& out, const Plane& p);
-
-        friend double calc_dist(const Point& point, const Plane& plane);
     };
 
-    
+    double calc_dist(const Point& point, const Plane& plane);
 }
 
 #endif // !PLANE_H_

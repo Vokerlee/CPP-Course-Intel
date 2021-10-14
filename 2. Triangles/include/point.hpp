@@ -14,7 +14,7 @@ namespace geom
 
     class Point
     {
-        constexpr static double TOLERANCE = 1e-5;
+        constexpr static double TOLERANCE = 1e-4;
 
     public:
         double x;
@@ -29,6 +29,7 @@ namespace geom
         Point operator-(const Point& source) const;
 
         bool operator==(const Point& source) const;
+        bool operator!=(const Point& source) const;
 
         explicit operator Vector() const;
 
