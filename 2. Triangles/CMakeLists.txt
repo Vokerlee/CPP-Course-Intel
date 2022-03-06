@@ -8,6 +8,30 @@ project ("Triangles" LANGUAGES CXX)
 
 #########################################################################
 
+add_compile_options(
+    -Wall
+    -Wpedantic
+
+    -Wno-int-to-pointer-cast
+    -Wno-variadic-macros
+    -Wno-unused-parameter
+    -Wno-sign-compare
+    -Wno-misleading-indentation
+
+    -Wcast-align
+    -Wcast-qual
+    -Wctor-dtor-privacy
+    -Wenum-compare
+    -Wfloat-equal
+    -Wnon-virtual-dtor
+    -Wold-style-cast
+    -Woverloaded-virtual
+    -Wredundant-decls
+    -Wsign-promo
+)
+
+#########################################################################
+
 # EXECUTABLE FILE PROPERTIES
 set(FILE_NAME       "triangle")
 set(TESTS_FILE_NAME "tr_tests")
@@ -58,26 +82,5 @@ set_target_properties(${FILE_NAME} PROPERTIES
 if(NOT CMAKE_CXX_EXTENSIONS)
     set(CMAKE_CXX_EXTENSIONS OFF)
 endif()
-
-add_compile_options(
-    -Werror
-
-    -Wall
-    -Wextra
-    -Wpedantic
-
-    -Wcast-align
-    -Wcast-qual
-    -Wconversion
-    -Wctor-dtor-privacy
-    -Wenum-compare
-    -Wfloat-equal
-    -Wnon-virtual-dtor
-    -Wold-style-cast
-    -Woverloaded-virtual
-    -Wredundant-decls
-    -Wsign-conversion
-    -Wsign-promo
-)
 
 #########################################################################
